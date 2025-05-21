@@ -4,12 +4,6 @@
 
 name: Test Workflow
 
-# Define env variables at workflow level
-env:
-  NODE_VERSION: "24"
-  PNPM_VERSION: "latest"
-  RUNNER_OS: "ubuntu-latest"
-
 on:
   # Runs on pushes targeting the default branch
   push:
@@ -38,10 +32,10 @@ jobs:
   # Build job
   build:
     # The os-type of the runner that the job will run on
-    runs-on: $RUNNER_OS
+    runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        node-version: [$NODE_VERSION]
+        node-version: [24]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
