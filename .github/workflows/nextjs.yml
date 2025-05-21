@@ -31,10 +31,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: ${{ env.PNPM_VERSION }}
+
       - name: Detect package manager
         id: detect-package-manager
         run: |
@@ -47,6 +49,7 @@ jobs:
             echo "Unable to determine pnpm package manager"
             exit 1
           fi
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -55,6 +58,7 @@ jobs:
           # PNPM CI Caching: https://pnpm.io/continuous-integration
           cache: ${{ env.PACKAGE_MANAGER }}
       # For Next.js specific caching
+
       - name: Cache Next.js build
         uses: actions/cache@v4
         with:
@@ -70,8 +74,10 @@ jobs:
       #     #
       #     # You may remove this line if you want to manage the configuration yourself.
       #     static_site_generator: next
+
       - name: Install dependencies
         run: ${{ env.PACKAGE_MANAGER }} ${{ env.INSTALL_COMMAND }}
+
       - name: Build with Next.js
         run: ${{ env.RUNNER }} next build
       # - name: Upload artifact
