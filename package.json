@@ -1,6 +1,5 @@
 {
   "name": "vercel-web-app",
-  "homepage": "https://sebastianlee90.github.io/vercel-web-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
