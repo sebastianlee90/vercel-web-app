@@ -4,6 +4,12 @@
 
 name: Test Workflow
 
+env:
+  PNPM_VERSION: "latest"
+  PACKAGE_MANAGER: "pnpm"
+  INSTALL_COMMAND: "install"
+  RUNNER: "pnpm"
+
 on:
   # Runs on pushes targeting the default branch
   push:
@@ -32,7 +38,7 @@ jobs:
   # Build job
   build:
     # The os-type of the runner that the job will run on
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [24]
@@ -46,14 +52,14 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: latest
+          version: ${{ env.PNPM_VERSION }}
       - name: Detect package manager
         id: detect-package-manager
         run: |
           if [ -f "${{ github.workspace }}/package.json" ]; then
-            echo "manager=pnpm" >> $GITHUB_OUTPUT
-            echo "command=install" >> $GITHUB_OUTPUT
-            echo "runner=pnpm" >> $GITHUB_OUTPUT
+            echo "manager=${{ env.PACKAGE_MANAGER }}"
+            echo "command=${{ env.INSTALL_COMMAND }}"
+            echo "runner=${{ env.RUNNER }}"
             exit 0
           else
             echo "Unable to determine pnpm package manager"
@@ -65,7 +71,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           # Cache pnpm modules
           # PNPM CI Caching: https://pnpm.io/continuous-integration
-          cache: ${{ steps.detect-package-manager.outputs.manager }}
+          cache: ${{ env.PACKAGE_MANAGER }}
       # For Next.js specific caching
       - name: Cache Next.js build
         uses: actions/cache@v4
@@ -83,9 +89,9 @@ jobs:
       #     # You may remove this line if you want to manage the configuration yourself.
       #     static_site_generator: next
       - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+        run: ${{ env.PACKAGE_MANAGER }} ${{ env.INSTALL_COMMAND }}
       - name: Build with Next.js
-        run: ${{ steps.detect-package-manager.outputs.runner }} next build
+        run: ${{ env.RUNNER }} next build
       # - name: Upload artifact
       #   uses: actions/upload-pages-artifact@v3
       #   with:
