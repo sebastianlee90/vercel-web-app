@@ -10,6 +10,7 @@ env:
   PACKAGE_MANAGER: "pnpm"
   INSTALL_COMMAND: "install"
   RUNNER: "pnpm"
+  NEXT_PUBLIC_BASE_PATH: "vercel-web-app"
 
 on:
   # Runs on pushes targeting the default branch
@@ -43,10 +44,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
