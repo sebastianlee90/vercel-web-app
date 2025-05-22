@@ -103,6 +103,11 @@ jobs:
     needs: build
     environment: production
     steps:
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
       - name: Install Vercel CLI
         run: pnpm add -g vercel@latest
 
