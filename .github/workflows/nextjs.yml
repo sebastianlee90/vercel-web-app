@@ -57,8 +57,8 @@ jobs:
           # Cache pnpm modules
           # PNPM CI Caching: https://pnpm.io/continuous-integration
           cache: ${{ env.PACKAGE_MANAGER }}
-      # For Next.js specific caching
 
+      # For Next.js specific caching
       - name: Cache Next.js build
         uses: actions/cache@v4
         with:
@@ -103,10 +103,21 @@ jobs:
     needs: build
     environment: production
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          # Cache pnpm modules
+          # PNPM CI Caching: https://pnpm.io/continuous-integration
+          cache: ${{ env.PACKAGE_MANAGER }}
 
       - name: Install Vercel CLI
         run: pnpm add -g vercel@latest
